@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Example 1.18</title>
+<script type="text/javascript">
+function OpenWin()
+{
+    smallWindow = window.open("","", "width=300, height=200");
+    smallWindow.document.write("<p>Hi again, old friend!<br /> Glad to see you today</p>");
+}
+function CloseWin()
+{
+    smallWindow.close();
+}
+</script>
+</head>
+<body>
+ <input type="button" value="Open a small window" onclick="OpenWin()" />
+ <input type="button" value="Close the small window" onclick="CloseWin()" />   
+</body>
+</html>
