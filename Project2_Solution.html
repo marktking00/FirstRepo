@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CPT238 Project 2</title>
+    <style>
+		#container{margin:0 auto;width:90%;}
+		h1{text-align:center;}
+		fieldset{margin:20px auto;width:50%;background-color:#eee;}
+		legend{font-weight:bold;}
+		input[type=text]:focus{background-color:aliceblue;}
+	</style>
+    <script>
+        let UserArray = [];
+        let LotteryWinningNumbers = [];
+        let myWinningNumbers = [];
+        let RandomNumberGenerator = () => {
+            let intermediateRandomNumber = Math.random();
+            let diceRoll = parseInt(intermediateRandomNumber*40);
+            diceRoll+=1;
+            return diceRoll;
+        }
+        let WinningNumberArrayGenerator = () => {
+            let counter=0;
+            let duplicateNumber = false;
+            let randomNumber =  RandomNumberGenerator();
+            if (!Array.isArray(LotteryWinningNumbers) || !LotteryWinningNumbers.length)
+            LotteryWinningNumbers.push(randomNumber);
+            while (LotteryWinningNumbers.length < 6) {
+                for (let counter=0; counter < LotteryWinningNumbers.length; counter++) {
+                    if (randomNumber == LotteryWinningNumbers[counter]) 
+                        duplicateNumber = true;
+                }
+                    if (duplicateNumber== false) {
+                        LotteryWinningNumbers.push(randomNumber);
+                    }
+                randomNumber = RandomNumberGenerator();
+                duplicateNumber = false;
+            }
+            LotteryWinningNumbers.sort(sortNumber);
+        }
+        function sortNumber(x, y) {
+            return x - y;
+        }
+    let UserInput = (userNumber) => {
+        if (!Array.isArray(UserArray) || !UserArray.length) {
+            userNumber=parseInt(userNumber);
+            UserArray.push(userNumber);
+        }
+        else if (UserArray.length < 6) {
+            userNumber=parseInt(userNumber);
+            UserArray.push(userNumber);
+        }
+         if (UserArray.length == 6) {
+  //          document.write("this far 3");
+            document.getElementById("btnUserInput").disabled = true;
+            WinningNumberArrayGenerator();
+            DetermineWinnings();
+            }    
+        document.getElementById("txtUserInput").value = "";   
+        document.getElementById("txtUserInput").focus();  
+    }  
+    let DetermineWinnings = () => {
+        for (let i=0; i<UserArray.length; i++) {
+            for (let j=0; j<LotteryWinningNumbers.length; j++) {
+                if (UserArray[i] == LotteryWinningNumbers[j]) 
+                    myWinningNumbers.push(UserArray[i]);
+            }
+        }
+        document.getElementById('number_of_matches').innerHTML = myWinningNumbers.length;
+        let WinningsAmount=0;
+        if (myWinningNumbers.length == 6)
+            WinningsAmount = 100000;
+        else if (myWinningNumbers.length == 5)
+            WinningsAmount = 100;
+        else if (myWinningNumbers.length == 4)
+            WinningsAmount = 5;
+        else WinningsAmount=0;
+        document.getElementById('user_winnings').innerHTML = WinningsAmount;
+        let strWinningNumbers = "";
+        for (let k=0; k<myWinningNumbers.length - 1; k++)
+            strWinningNumbers = strWinningNumbers + myWinningNumbers[k] + ", ";
+        strWinningNumbers = strWinningNumbers + myWinningNumbers[myWinningNumbers.length-1];
+        document.getElementById('user_winning_numbers').innerHTML = strWinningNumbers;
+        let strUserNumbers = "";
+        for (let l=0; l<UserArray.length - 1; l++)
+            strUserNumbers = strUserNumbers + UserArray[l] + ", ";
+        strUserNumbers = strUserNumbers + UserArray[UserArray.length - 1];
+        document.getElementById('user_numbers').innerHTML = strUserNumbers;
+        let strGeneratedWinningNumbers = "";
+        for (let m=0; m<LotteryWinningNumbers.length - 1; m++)
+            strGeneratedWinningNumbers = strGeneratedWinningNumbers + LotteryWinningNumbers[m] + ", ";
+        strGeneratedWinningNumbers = strGeneratedWinningNumbers + LotteryWinningNumbers[LotteryWinningNumbers.length - 1];
+        document.getElementById('winning_numbers').innerHTML = strGeneratedWinningNumbers;
+    }   
+    </script>
+</head>
+<body>
+        <div id="container">
+    <h1>CPT238 Project 2: Play the Lottery!</h1>
+    <fieldset>
+            <legend>Type in a number between 1-40 and click the button to start the game.</legend>
+            <input type="text" name="txtUserInput" id="txtUserInput" ></p>
+            <input type="button" id="btnUserInput" value="Click the Button!" onclick="UserInput(txtUserInput.value);"></button>        
+    </fieldset>
+    <fieldset>
+    <legend>Lottery Results:</legend>
+     <legend>Winning Numbers: <span id="winning_numbers">&nbsp;</span></legend>
+     <legend>User Numbers: <span id="user_numbers">&nbsp;</span></legend>
+     <legend>Number of Matches: <span id="number_of_matches">&nbsp;</span></legend>  
+     <legend>User Winning Numbers: <span id="user_winning_numbers">&nbsp;</span></legend>  
+     <legend>User Winnings: <span id="user_winnings">&nbsp;</span></legend>  
+    </fieldset>
+    </div>
+</body>
+</html>
